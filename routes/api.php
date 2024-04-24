@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\studentController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,3 +44,14 @@ Route::delete('/student/{id}', [studentController::class,'destroy']);
 // Route::delete('/student/{id}',function(){
 //     return 'ELIMINANDO ESTUDIANTES';
 // });
+
+Route::post('/auth',[AuthController::class,'register']);
+Route::post('/login',[AuthController::class,'login']);
+
+
+
+
+//Rutas protegidas
+Route::middleware('jwt.verify')->group(function(){
+    Route::get('/users',[UserController::class,'index']);
+});
