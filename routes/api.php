@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\MstUsuariosController;
 use App\Http\Controllers\Api\studentController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\UserController;
@@ -47,11 +48,11 @@ Route::delete('/student/{id}', [studentController::class,'destroy']);
 
 Route::post('/auth',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
-
-
+Route::post('/logout',[AuthController::class,'logout']);
 
 
 //Rutas protegidas
 Route::middleware('jwt.verify')->group(function(){
     Route::get('/users',[UserController::class,'index']);
+    Route::get('/profile/{login}',[MstUsuariosController::class, 'show']);
 });

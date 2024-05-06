@@ -57,7 +57,7 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request){
         $credencials =  $request->only('email','password');
-        try{
+        try {
             if(!$token = JWTAuth::attempt($credencials)){
                 $data = [
                     'error' => 'invalid credentials',
@@ -66,7 +66,12 @@ class AuthController extends Controller
                 return  response()->json($data, 400);
             }
             
- 
+            $user = auth()->user();
+    
+            $customClaims = ['name' => $user->name,'administrador' => 'SI','fecha_vencimiento' => '2024-04-26'];
+    
+            $token = JWTAuth::claims($customClaims)->attempt($credencials);
+    
         } catch(JWTException $e){
             $data = [
                 'error' => 'Not create token',
@@ -74,7 +79,26 @@ class AuthController extends Controller
             ];
             return response()->json([$data,500]);
         }
-
+    
         return response()->json(compact('token'));
+    }
+
+    public function logout(Request $request)
+    {
+        try {
+
+            $token = JWTAuth::getToken();
+
+
+            JWTAuth::invalidate($token);
+
+            return response()->json(['message' => 'Token invalidated successfully', 'status' => 200]);
+        } catch (JWTException $e) {
+
+            return response()->json(['message' => 'Failed to invalidate token', 'status' => 500], 500);
+        } catch (\Exception $e) {
+
+            return response()->json(['message' => 'An unexpected error occurred', 'status' => 500], 500);
+        }
     }
 }
