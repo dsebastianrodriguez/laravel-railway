@@ -68,7 +68,7 @@ class AuthController extends Controller
             
             $user = auth()->user();
     
-            $customClaims = ['login' => $user->name,'administrador' => 'SI','fecha_vencimiento' => '2024-04-26'];
+            $customClaims = ['user' => $user->name,'administrador' => 'SI','fecha_vencimiento' => '2024-04-26'];
     
             $token = JWTAuth::claims($customClaims)->attempt($credencials);
     
