@@ -11,6 +11,203 @@
         }
     ],
     "paths": {
+        "/api/usuarios": {
+            "get": {
+                "tags": [
+                    "Maestro_usuarios"
+                ],
+                "summary": "Obtiene el listado de usuarios",
+                "description": "Retorna una lista de todos los usuarios. Requiere un token de autenticación Bearer.",
+                "operationId": "3d324e728a1a5172f62dfb8ebdb1b9ea",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "John Doe"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "johndoe@example.com"
+                                            },
+                                            "phone": {
+                                                "type": "string",
+                                                "example": "3112112111"
+                                            },
+                                            "language": {
+                                                "type": "string",
+                                                "example": "Spanish"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "example": "2024-02-23T00:09:16.000000Z"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "example": "2024-02-23T12:33:45.000000Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 401
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/profile/{login}": {
+            "get": {
+                "tags": [
+                    "Maestro_usuarios"
+                ],
+                "summary": "Obtiene un usuario por login",
+                "description": "Retorna un usuario basado en su login. Requiere un token de autenticación Bearer.",
+                "operationId": "9a2fff7c6bacba7b0658041bb0fe798d",
+                "parameters": [
+                    {
+                        "name": "login",
+                        "in": "path",
+                        "description": "Login del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "johndoe@example.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "3112112111"
+                                                },
+                                                "language": {
+                                                    "type": "string",
+                                                    "example": "Spanish"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2024-02-23T00:09:16.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2024-02-23T12:33:45.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No data found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No data found"
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 401
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/student": {
             "get": {
                 "tags": [
@@ -67,7 +264,15 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "apiUserAuth": []
+                    },
+                    {
+                        "apiKeyAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -518,6 +723,302 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/auth": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Registro de un nuevo usuario",
+                "operationId": "440e9849d9020b2694434307b830188c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "johndoe@example.com"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2024-05-21T14:30:00.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2024-05-21T14:30:00.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJh..."
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 201
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error in validation of data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error in validation of data"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error creating the user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error creating the user"
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Inicio de sesión del usuario",
+                "operationId": "c373bc4cffa4a56fc64e3979b8ee7b96",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJh..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "invalid credentials"
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Not create token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Not create token"
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Cierre de sesión del usuario",
+                "operationId": "5ff2dc8b48bff52908d3821a0ecc9b3e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "johndoe@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token invalidated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Token invalidated successfully"
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to invalidate token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to invalidate token"
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            },
+            "apiUserAuth": {
+                "type": "apiKey",
+                "name": "x-api-user",
+                "in": "header"
+            },
+            "apiKeyAuth": {
+                "type": "apiKey",
+                "name": "x-api-key",
+                "in": "header"
             }
         }
     }

@@ -12,8 +12,25 @@ use Illuminate\Support\Facades\Validator;
  *             title="Api de estudiantes prueba en servidor LINUX", 
  *             version="1.0",
  *             description="Listado de URL de la api de estudiantes"
- * )
- *
+ * ),
+ * @OA\SecurityScheme(
+ *         securityScheme="bearerAuth",
+ *         type="http",
+ *         scheme="bearer",
+ *         bearerFormat="JWT"
+ *     ),
+ * @OA\SecurityScheme(
+ *     securityScheme="apiUserAuth",
+ *     type="apiKey",
+ *     in="header",
+ *     name="x-api-user"
+ *     ),
+ * @OA\SecurityScheme(
+ *     securityScheme="apiKeyAuth",
+ *     type="apiKey",
+ *     in="header",
+ *     name="x-api-key"
+ * ),
  * @OA\Server(url="http://127.0.0.1:8000")
  */
 
@@ -24,6 +41,10 @@ class studentController extends Controller
      * @OA\Get (
      *     path="/api/student",
      *     tags={"Estudiantes"},
+     * security={
+     *         {"apiUserAuth": {}},
+     *         {"apiKeyAuth": {}}
+     *     },
      *     @OA\Response(
      *         response=200,
      *         description="OK",
