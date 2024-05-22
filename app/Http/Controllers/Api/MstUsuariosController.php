@@ -11,10 +11,11 @@ class MstUsuariosController extends Controller
     /**
      * @OA\Get(
      *     path="/api/usuarios",
-     *     tags={"Maestro_usuarios"},
+     *     tags={"Maestro usuarios"},
      *     summary="Obtiene el listado de usuarios",
      *     description="Retorna una lista de todos los usuarios. Requiere un token de autenticación Bearer.",
-     *     security={{"bearerAuth":{}}},
+     *     security={{"bearerAuth":{}},{"apiUserAuth": {}},
+     *         {"apiKeyAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="OK",
@@ -95,7 +96,7 @@ class MstUsuariosController extends Controller
     /**
      * @OA\Get(
      *     path="/api/profile/{login}",
-     *     tags={"Maestro_usuarios"},
+     *     tags={"Maestro usuarios"},
      *     summary="Obtiene un usuario por login",
      *     description="Retorna un usuario basado en su login. Requiere un token de autenticación Bearer.",
      *     security={{"bearerAuth":{}}},

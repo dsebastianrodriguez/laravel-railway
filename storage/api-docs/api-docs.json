@@ -14,7 +14,7 @@
         "/api/usuarios": {
             "get": {
                 "tags": [
-                    "Maestro_usuarios"
+                    "Maestro usuarios"
                 ],
                 "summary": "Obtiene el listado de usuarios",
                 "description": "Retorna una lista de todos los usuarios. Requiere un token de autenticación Bearer.",
@@ -87,6 +87,12 @@
                 "security": [
                     {
                         "bearerAuth": []
+                    },
+                    {
+                        "apiUserAuth": []
+                    },
+                    {
+                        "apiKeyAuth": []
                     }
                 ]
             }
@@ -94,7 +100,7 @@
         "/api/profile/{login}": {
             "get": {
                 "tags": [
-                    "Maestro_usuarios"
+                    "Maestro usuarios"
                 ],
                 "summary": "Obtiene un usuario por login",
                 "description": "Retorna un usuario basado en su login. Requiere un token de autenticación Bearer.",
